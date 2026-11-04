@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+const API_URL = import.meta.env.VITE_API_URL || '';
+// Example: fetch(`${API_URL}/api/products`)
 
 export default function CheckoutForm({ cart, onBack, onSuccess }) {
   const [formData, setFormData] = useState({
