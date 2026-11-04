@@ -46,6 +46,10 @@ app.get('/api/products/category/:id', async (req, res) => {
   }
 });
 
+app.get('/', (req, res) => {
+  res.send('RestoPi Cloud POS Backend is up and running successfully! 🚀');
+});
+
 app.post('/api/orders', async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
