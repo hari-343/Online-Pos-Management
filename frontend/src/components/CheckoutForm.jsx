@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+
 const API_URL = import.meta.env.VITE_API_URL || '';
-// Example: fetch(`${API_URL}/api/products`)
 
 export default function CheckoutForm({ cart, onBack, onSuccess }) {
   const [formData, setFormData] = useState({
@@ -13,7 +13,6 @@ export default function CheckoutForm({ cart, onBack, onSuccess }) {
   const validate = () => {
     let errs = {};
     if (!formData.name.trim()) errs.name = 'Customer Name is required.';
-    // Fixed version with double backslashes:
     if (!formData.email.trim() || !/^\S+@\S+\.\S+$/.test(formData.email)) errs.email = 'Valid email is required.';
     if (!formData.mobile.trim() || !/^\d{10}$/.test(formData.mobile)) errs.mobile = 'Valid 10-digit mobile number required.';
     if (!formData.address.trim()) errs.address = 'Delivery address is required.';
@@ -33,7 +32,7 @@ export default function CheckoutForm({ cart, onBack, onSuccess }) {
       setLoading(true);
       setApiError('');
       try {
-        const response = await fetch('/api/orders', {
+        const response = await fetch(`${API_URL}/api/orders`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -60,8 +59,8 @@ export default function CheckoutForm({ cart, onBack, onSuccess }) {
       {apiError && <div style={{ color: '#ef4444', margin: '1rem 0' }}>{apiError}</div>}
       
       <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', marginTop: '1rem' }}>
-        <h4 style={{ color: '#334155' }}>Order Total Summary: \${totalAmount.toFixed(2)}</h4>
-        <form onSubmit={handleSubmit} style={{ marginTop: '1.2rem' }}>
+        <h4 style={{ color: '#334155' }}>Order Total Summary: ${totalAmount.toFixed(2)}</h4>
+        <form onSubmit={handleSubmit} style={{ marginTop: '1.2netrem' }}>
           <div className="form-group">
             <label>Customer Full Name</label>
             <input type="text" name="name" value={formData.name} onChange={handleChange} />
