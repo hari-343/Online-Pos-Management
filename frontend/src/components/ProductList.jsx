@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
-// Example: fetch(`${API_URL}/api/products`)
 
 export default function ProductList({ onAddToCart }) {
   const [categories, setCategories] = useState([]);
@@ -9,18 +8,24 @@ export default function ProductList({ onAddToCart }) {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   useEffect(() => {
-    fetch('/api/categories')
+    fetch(`${API_URL}/api/categories`)
       .then(res => res.json())
-      .then(data => setCategories(data));
+      .then(data => setCategories(data))
+      .catch(err => console.error('Failed to fetch categories:', err));
+    
     fetchProducts('all');
   }, []);
 
   const fetchProducts = (catId) => {
     setSelectedCategory(catId);
-    const endpoint = catId === 'all' ? '/api/products' : `/api/products/category/${catId}`;
+    const endpoint = catId === 'all' 
+      ? `${API_URL}/api/products` 
+      : `${API_URL}/api/products/category/${catId}`;
+      
     fetch(endpoint)
       .then(res => res.json())
-      .then(data => setProducts(data));
+      .then(data => setProducts(data))
+      .catch(err => console.error('Failed to fetch products:', err));
   };
 
   return (
