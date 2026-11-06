@@ -43,7 +43,11 @@ export default function App() {
       <Navbar cartCount={totalCartCount} onOpenCart={() => setView('cart')} />
 
       {view === 'products' && (
-        <ProductList onAddToCart={handleAddToCart} />
+        <ProductList 
+          cart={cart} 
+          onAddToCart={handleAddToCart} 
+          onUpdateQuantity={handleUpdateQuantity} 
+        />
       )}
 
       {view === 'cart' && (
