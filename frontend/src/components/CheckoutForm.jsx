@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL || '';
 
 export default function CheckoutForm({ cart, onBack, onSuccess }) {
   const [formData, setFormData] = useState({
-    name: '', email: '', mobile: '', address: '', city: '', pincode: ''
+    name: '', email: '', mobile: '', address: '', city: '', pincode: '', paymentMethod: 'Cash'
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -37,6 +37,7 @@ export default function CheckoutForm({ cart, onBack, onSuccess }) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             customer: formData,
+            paymentMethod: formData.paymentMethod,
             items: cart.map(i => ({ productId: i._id, quantity: i.quantity }))
           })
         });
@@ -60,7 +61,7 @@ export default function CheckoutForm({ cart, onBack, onSuccess }) {
       
       <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', marginTop: '1rem' }}>
         <h4 style={{ color: '#334155' }}>Order Total Summary: ${totalAmount.toFixed(2)}</h4>
-        <form onSubmit={handleSubmit} style={{ marginTop: '1.2netrem' }}>
+        <form onSubmit={handleSubmit} style={{ marginTop: '1.2rem' }}>
           <div className="form-group">
             <label>Customer Full Name</label>
             <input type="text" name="name" value={formData.name} onChange={handleChange} />
@@ -92,10 +93,20 @@ export default function CheckoutForm({ cart, onBack, onSuccess }) {
             {errors.pincode && <div className="error-text">{errors.pincode}</div>}
           </div>
 
+          {/* Payment Method Option Added after Customer Details */}
+          <div className="form-group" style={{ marginTop: '1rem' }}>
+            <label>Payment Method</label>
+            <select name="paymentMethod" value={formData.paymentMethod} onChange={handleChange} style={{ width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid #cbd5e1' }}>
+              <option value="Cash">Cash</option>
+              <option value="UPI">UPI / QR Code</option>
+              <option value="Card">Credit / Debit Card</option>
+            </select>
+          </div>
+
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1.5rem' }}>
             <button type="button" onClick={onBack} style={{ padding: '0.6rem 1rem', background: '#e2e8f0', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600 }}>Back to Cart</button>
             <button type="submit" className="add-btn" disabled={loading}>
-              {loading ? 'Processing via RestoPi...' : 'Place Order & Print KOT'}
+              {loading ? 'Placing Order...' : 'Place Order'}
             </button>
           </div>
         </form>
